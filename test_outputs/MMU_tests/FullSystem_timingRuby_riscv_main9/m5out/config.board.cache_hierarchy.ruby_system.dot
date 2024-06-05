@@ -1,0 +1,10 @@
+graph G {
+rankdir=LR;
+"board.cache_hierarchy.ruby_system.network.routers0" [color="#000000", fillcolor="#cce6fc", fontcolor="#000000", fontname=Arial, fontsize=14, label="R 0", shape=Mrecord, style="rounded, filled"];
+"board.cache_hierarchy.ruby_system.network.routers1" [color="#000000", fillcolor="#cce6fc", fontcolor="#000000", fontname=Arial, fontsize=14, label="R 1", shape=Mrecord, style="rounded, filled"];
+"board.cache_hierarchy.ruby_system.network.routers0" -- "board.cache_hierarchy.ruby_system.network.routers1"  [color="#042d50", dir=forward, weight=0.5];
+"board.cache_hierarchy.ruby_system.controllers" [color="#000000", fillcolor="#e5bcd0", fontcolor="#000000", fontname=Arial, fontsize=14, label="", shape=Mrecord, style="rounded, filled"];
+"board.cache_hierarchy.ruby_system.controllers" -- "board.cache_hierarchy.ruby_system.network.routers0"  [color="#381526", dir=both, weight=1.0];
+"board.cache_hierarchy.ruby_system.directory_controllers" [color="#000000", fillcolor="#e5bcd0", fontcolor="#000000", fontname=Arial, fontsize=14, label=directory_, shape=Mrecord, style="rounded, filled"];
+"board.cache_hierarchy.ruby_system.directory_controllers" -- "board.cache_hierarchy.ruby_system.network.routers1"  [color="#381526", dir=both, weight=1.0];
+}

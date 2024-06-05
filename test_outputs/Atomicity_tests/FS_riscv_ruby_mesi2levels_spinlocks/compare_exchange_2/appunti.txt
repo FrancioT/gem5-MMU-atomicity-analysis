@@ -1,0 +1,39 @@
+riga 2624: entrambi i thread arrivano alla prima load reserve ed entrambe hanno come next state S (perchè è una pagina contente un istruzione giustamente, quindi non va modificata)
+riga 2672: il core 1 è il primo a conquistare il lock con:
+		- Issuing LL
+		- LLSC Monitor - inserting load linked - addr=0x10107d880 - cpu=1         <---- riga 153  gem5/src/mem/ruby/system/Sequencer.cc
+		- Cache hit at [0x10107d8b4, line 0x10107d880]
+		- next_state: M   (qui next state è M, nonostante basti lo stato S, poichè già era in M prima della load e non ha ancora fatto la write back)
+N.B: qualsiasi richiesta la inoltra ad entrambe le cache (ICache e DCache), semplicemente una delle 2 fallirà.
+
+il core 1 ottiene il lock perchè a riga 2674 fa la found della pagina in cui c'è la shared variable, poi a riga 2676 c'è la risposta con lo stato M
+   [L1Cache_Controller 1], Time: 290489698, state: M, event: Load, addr: 0x10107d880
+mentre a riga 2693 anche il core 0 fa address found, ma a riga 2695 gli ritorna con lo stato I
+   [L1Cache_Controller 0], Time: 290489698, state: I, event: Load, addr: 0x10107d880
+   
+
+riga 2744 a riga 2749: il core 1 finisce con la store conditional                         <---- riga 828  gem5/src/arch/riscv/isa.cc
+riga 2766-2767 e riga 2777 (con next state M)
+
+riga 2899: il core 0 fa miss sulla entry di cache della shared variable, quindi recupera la entry che adesso diventa shared con il nuovo stato S (riga 2909) (viene fatta fare la write back dal core 1)
+           in gem5/src/mem/ruby/system/RubyPort.cc  a riga 454 ho la callback dell'evento di ricerca stimolato dalla miss
+
+riga 4719: il core 0 raggiunge la load reserve
+riga 4757: il core 0 fa lookup sulla shared variable
+riga 4784: il core 0 riesce a concludere la load reserve con la riga
+   [L1Cache_Controller 0], Time: 290489811, state: S, event: Load, addr: 0x10107d880
+
+N.B: da qui in poi quando prendo la load reserve sulla shared variable lo stato è in stato S e va in stato M solo dopo la store conditional (riga 5122)
+
+a riga 5034 il core 0 sa per fare la store quindi la entry di shared variable della sua cache va da stato S a SM, invalidando così le altre cache.
+Infatti a riga 5043 il core 1 ha stato I per quella entry
+
+N.B: quando passa da stato S a M, invalida anche la entry nella propria cache, tanto è vero che la prima volta, era già in stato M e dopo i messaggi
+  LLSC Monitor - clearing due to store conditional - addr=0x10107d880 - cpu=0                   <---- riga 180  gem5/src/mem/ruby/system/Sequencer.cc
+  global: Testing Lock for addr: 0x10107d880 cur 0 con 0
+  global: Clear Lock for addr: 0x10107d880
+faceva comunque hit.
+Mentre da quel punto in poi, quando fa la transizione da S a M, dopo i messaggi fa miss
+
+
+

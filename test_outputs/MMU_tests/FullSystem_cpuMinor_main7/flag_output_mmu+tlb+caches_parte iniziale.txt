@@ -1,0 +1,164 @@
+Global frequency set at 1000000000000 ticks per second
+gem5 Simulator System.  https://www.gem5.org
+gem5 is copyrighted software; use the --copyright option for details.
+
+gem5 version 23.1.0.0
+gem5 compiled Mar 13 2024 10:29:04
+gem5 started Mar 21 2024 00:00:33
+gem5 executing on francio-ThinkPad-P15v-Gen-1, pid 21207
+command line: ./gem5/build/ARM/gem5.opt --debug-flags=TLB,TLBVerbose,PageTableWalker,Cache,CacheAll,CacheComp,CachePort,CacheRepl,CacheTags,CacheVerbose gem5/configs/example/arm/starter_fs.py --restore m5out/cpt.51131014255250/ --cpu minor
+
+51131014255500: system.cpu_cluster.cpus.mmu: TLB variables changed!
+51131014255500: system.cpu_cluster.cpus.mmu: CPSR is priv:0 UserMode:0 secure:0 S1S2NsTran:0
+51131014255500: system.cpu_cluster.cpus.mmu: translateFs addr 0x400800, mode 2, st2 0, scr 0x30531 sctlr 0x3475d91d flags 0x100 tranType 0x0
+51131014255500: system.cpu_cluster.cpus.mmu: Translating VA=0x400800 context=11
+51131014255500: system.cpu_cluster.cpus.mmu.itb: Lookup 0x400800, asn 0xb -> miss vmn 0x0 hyp 0 secure 0 ppn 0 size: 0 pa: 0 ap:0 ns:0 nstid:0 g:0 asid: 0 el: 0
+51131014255500: system.cpu_cluster.cpus.mmu.itb: 
+Passo al livello dopo di questo stage
+
+51131014255500: system.cpu_cluster.cpus.mmu.l2_shared: Lookup 0x400800, asn 0xb -> miss vmn 0x0 hyp 0 secure 0 ppn 0 size: 0 pa: 0 ap:0 ns:0 nstid:0 g:0 asid: 0 el: 0
+51131014255500: system.cpu_cluster.cpus.mmu.l2_shared: 
+Passo al livello dopo di questo stage
+
+51131014255500: system.cpu_cluster.cpus.mmu: TLB Miss: Starting hardware table walker for 0x400800(11:0)
+51131014255500: system.cpu_cluster.cpus.mmu.itb_walker: creating new instance of WalkerState
+51131014255500: system.cpu_cluster.cpus.mmu.itb_walker: Beginning table walk for address 0x400800, TCR: 0x32b5593519
+51131014255500: system.cpu_cluster.cpus.mmu.itb_walker:  - Selecting TTBR0 (AArch64)
+51131014255500: system.cpu_cluster.cpus.mmu.itb_walker: Fetching descriptor at address: 0xfb89e000 stage2Req: 0
+51131014255500: system.cpu_cluster.cpus.mmu.itb_walker: Adding to walker fifo: queue size before adding: 0
+51131014255500: system.cpu_cluster.cpus.mmu: 
+Inizio a tradurre nello stage 1
+
+51131014255500: system.cpu_cluster.cpus.mmu: Translation returning delay=1 fault=0
+51131014255501: system.cpu_cluster.l2: recvTimingReq tags:
+no valid tags
+
+51131014255501: system.cpu_cluster.l2: access for ReadReq [fb89e000:fb89e007] miss
+51131014255501: system.cpu_cluster.l2.mshr_queue: Allocating new MSHR. Number in use will be 1/32
+51131014255501: system.cpu_cluster.l2.mshr_queue.entry.targets: New target allocated: ReadReq [fb89e000:fb89e007]
+51131014255501: system.cpu_cluster.l2.mem_side_port: Scheduling send event at 51131014259249
+51131014259249: system.cpu_cluster.l2: sendMSHRQueuePacket: MSHR ReadReq [fb89e000:fb89e007]
+51131014259249: system.cpu_cluster.l2: createMissPacket: created ReadCleanReq [fb89e000:fb89e03f] from ReadReq [fb89e000:fb89e007]
+51131014333000: system.cpu_cluster.l2: recvTimingResp: Handling response ReadResp [fb89e000:fb89e03f]
+51131014333000: system.cpu_cluster.l2: Block for addr 0xfb89e000 being updated in Cache
+51131014333000: system.cpu_cluster.l2: Replacement victim: state: 11 (I) writable: 0 readable: 0 dirty: 0 prefetched: 0 | tag: 0xffffffffffffffff secure: 0 valid: 0 | set: 0x380 way: 0
+51131014333000: system.cpu_cluster.l2: Block addr 0xfb89e000 (ns) moving from  to state: 17 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfb89 secure: 0 valid: 1 | set: 0x380 way: 0
+51131014333000: system.cpu_cluster.l2.mshr_queue: Deallocating all targets: [0xfb89e000:0xfb89e03f](ns)    state:  InSvc    
+51131014333000: system.cpu_cluster.l2.mshr_queue: MSHR deallocated. Number in use: 0/32
+51131014333000: system.cpu_cluster.l2: recvTimingResp: Leaving with ReadResp [fb89e000:fb89e03f]
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker: calling doLongDescriptor for vaddr:0x400800
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker: L1 descriptor for 0x400800 is 0xfba09003 (AArch64)
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker: Analyzing L1 descriptor: 0xfba09003, type: 1
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker: L1 descriptor points to L2 descriptor at: 0xfba09010 (ns)
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker: Inserting Table descriptor into TLB
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker:  - N:30 pfn:0xfba09000 size:0x3fffffff global:0 valid:1
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker:  - vpn:0 xn:0 pxn:0 ap:3 domain:1 asid:11 vmid:0 hyp:0 nc:0 ns:1
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker:  - domain from L1 desc:1 data:0xfba09003
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker: 
+La table walk ha finito, inseristo la entry PARZIALE trovata
+
+51131014334500: system.cpu_cluster.cpus.mmu.itb_walker: Fetching descriptor at address: 0xfba09010 stage2Req: 0
+51131014334501: system.cpu_cluster.l2: recvTimingReq tags:
+	Block: state: 17 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfb89 secure: 0 valid: 1 | set: 0x380 way: 0
+
+51131014334501: system.cpu_cluster.l2: access for ReadReq [fba09010:fba09017] miss
+51131014334501: system.cpu_cluster.l2.mshr_queue: Allocating new MSHR. Number in use will be 1/32
+51131014334501: system.cpu_cluster.l2.mshr_queue.entry.targets: New target allocated: ReadReq [fba09010:fba09017]
+51131014334501: system.cpu_cluster.l2.mem_side_port: Scheduling send event at 51131014338249
+51131014338249: system.cpu_cluster.l2: sendMSHRQueuePacket: MSHR ReadReq [fba09010:fba09017]
+51131014338249: system.cpu_cluster.l2: createMissPacket: created ReadCleanReq [fba09000:fba0903f] from ReadReq [fba09010:fba09017]
+51131014402000: system.cpu_cluster.l2: recvTimingResp: Handling response ReadResp [fba09000:fba0903f]
+51131014402000: system.cpu_cluster.l2: Block for addr 0xfba09000 being updated in Cache
+51131014402000: system.cpu_cluster.l2: Replacement victim: state: 10 (I) writable: 0 readable: 0 dirty: 0 prefetched: 0 | tag: 0xffffffffffffffff secure: 0 valid: 0 | set: 0x240 way: 0
+51131014402000: system.cpu_cluster.l2: Block addr 0xfba09000 (ns) moving from  to state: 16 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfba0 secure: 0 valid: 1 | set: 0x240 way: 0
+51131014402000: system.cpu_cluster.l2.mshr_queue: Deallocating all targets: [0xfba09000:0xfba0903f](ns)    state:  InSvc    
+51131014402000: system.cpu_cluster.l2.mshr_queue: MSHR deallocated. Number in use: 0/32
+51131014402000: system.cpu_cluster.l2: recvTimingResp: Leaving with ReadResp [fba09000:fba0903f]
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker: calling doLongDescriptor for vaddr:0x400800
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker: L2 descriptor for 0x400800 is 0xfbb8b003 (AArch64)
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker: Analyzing L2 descriptor: 0xfbb8b003, type: 1
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker: L2 descriptor points to L3 descriptor at: 0xfbb8b000 (ns)
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker: Inserting Table descriptor into TLB
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker:  - N:21 pfn:0xfbb8b000 size:0x1fffff global:0 valid:1
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker:  - vpn:0x2 xn:0 pxn:0 ap:3 domain:1 asid:11 vmid:0 hyp:0 nc:0 ns:1
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker:  - domain from L2 desc:1 data:0xfbb8b003
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker: 
+La table walk ha finito, inseristo la entry PARZIALE trovata
+
+51131014403500: system.cpu_cluster.cpus.mmu.l2_shared: Inserting entry into TLB with pfn:0xfbb8b000 size:0x1fffff vpn: 0x2 asid:11 vmid:0 N:21 global:0 valid:1 nc:0 xn:0 ap:0x3 domain:0x1 ns:1 nstid:1 isHyp:0
+51131014403500: system.cpu_cluster.cpus.mmu.itb_walker: Fetching descriptor at address: 0xfbb8b000 stage2Req: 0
+51131014403501: system.cpu_cluster.l2: recvTimingReq tags:
+	Block: state: 16 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfba0 secure: 0 valid: 1 | set: 0x240 way: 0
+	Block: state: 17 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfb89 secure: 0 valid: 1 | set: 0x380 way: 0
+
+51131014403501: system.cpu_cluster.l2: access for ReadReq [fbb8b000:fbb8b007] miss
+51131014403501: system.cpu_cluster.l2.mshr_queue: Allocating new MSHR. Number in use will be 1/32
+51131014403501: system.cpu_cluster.l2.mshr_queue.entry.targets: New target allocated: ReadReq [fbb8b000:fbb8b007]
+51131014403501: system.cpu_cluster.l2.mem_side_port: Scheduling send event at 51131014407249
+51131014407249: system.cpu_cluster.l2: sendMSHRQueuePacket: MSHR ReadReq [fbb8b000:fbb8b007]
+51131014407249: system.cpu_cluster.l2: createMissPacket: created ReadCleanReq [fbb8b000:fbb8b03f] from ReadReq [fbb8b000:fbb8b007]
+51131014471000: system.cpu_cluster.l2: recvTimingResp: Handling response ReadResp [fbb8b000:fbb8b03f]
+51131014471000: system.cpu_cluster.l2: Block for addr 0xfbb8b000 being updated in Cache
+51131014471000: system.cpu_cluster.l2: Replacement victim: state: 21 (I) writable: 0 readable: 0 dirty: 0 prefetched: 0 | tag: 0xffffffffffffffff secure: 0 valid: 0 | set: 0x2c0 way: 0
+51131014471000: system.cpu_cluster.l2: Block addr 0xfbb8b000 (ns) moving from  to state: 27 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfbb8 secure: 0 valid: 1 | set: 0x2c0 way: 0
+51131014471000: system.cpu_cluster.l2.mshr_queue: Deallocating all targets: [0xfbb8b000:0xfbb8b03f](ns)    state:  InSvc    
+51131014471000: system.cpu_cluster.l2.mshr_queue: MSHR deallocated. Number in use: 0/32
+51131014471000: system.cpu_cluster.l2: recvTimingResp: Leaving with ReadResp [fbb8b000:fbb8b03f]
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker: calling doLongDescriptor for vaddr:0x400800
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker: L3 descriptor for 0x400800 is 0x200000fa31afd3 (AArch64)
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker: Analyzing L3 descriptor: 0x200000fa31afd3, pxn: 1, xn: 0, ap: 3, af: 1, type: 3
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker: memAttrsAArch64 AttrIndx:0x4 sh:0x3
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker: Inserting Page descriptor into TLB
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker:  - N:12 pfn:0xfa31a size:0xfff global:0 valid:1
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker:  - vpn:0x400 xn:0 pxn:1 ap:3 domain:1 asid:11 vmid:0 hyp:0 nc:0 ns:1
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker:  - domain from L3 desc:1 data:0x200000fa31afd3
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker: 
+La table walk ha finito, inseristo la entry trovata
+
+51131014472500: system.cpu_cluster.cpus.mmu.itb: Inserting entry into TLB with pfn:0xfa31a size:0xfff vpn: 0x400 asid:11 vmid:0 N:12 global:0 valid:1 nc:0 xn:0 ap:0x3 domain:0x1 ns:1 nstid:1 isHyp:0
+51131014472500: system.cpu_cluster.cpus.mmu.l2_shared: Inserting entry into TLB with pfn:0xfa31a size:0xfff vpn: 0x400 asid:11 vmid:0 N:12 global:0 valid:1 nc:0 xn:0 ap:0x3 domain:0x1 ns:1 nstid:1 isHyp:0
+51131014472500: system.cpu_cluster.cpus.mmu.itb_walker: calling translateTiming again
+51131014472500: system.cpu_cluster.cpus.mmu: CPSR is priv:0 UserMode:0 secure:0 S1S2NsTran:0
+51131014472500: system.cpu_cluster.cpus.mmu: translateFs addr 0x400800, mode 2, st2 0, scr 0x30531 sctlr 0x3475d91d flags 0x100 tranType 0x0
+51131014472500: system.cpu_cluster.cpus.mmu: Translating VA=0x400800 context=11
+51131014472500: system.cpu_cluster.cpus.mmu.itb: Lookup 0x400800, asn 0xb -> hit vmn 0x0 hyp 0 secure 0 ppn 0xfa31a size: 0xfff pa: 0xfa31a800 ap:3 ns:1 nstid:1 g:0 asid: 11 el: 0
+51131014472500: system.cpu_cluster.cpus.mmu: 
+Inizio a tradurre nello stage 1
+
+51131014472500: system.cpu_cluster.cpus.mmu: Checking S1 permissions: ap:3, xn:0, pxn:1, r:0, w:0, x:1, is_priv: 0, wxn: 0
+51131014472500: system.cpu_cluster.cpus.mmu: Setting memory attributes: shareable: 0, innerAttrs: 0, outerAttrs: 0, mtype: 2, stage2: 0
+51131014472500: system.cpu_cluster.cpus.mmu: Translation returning delay=0 fault=0
+51131014472500: system.cpu_cluster.cpus.icache: recvTimingReq tags:
+no valid tags
+
+51131014472500: system.cpu_cluster.cpus.icache: access for ReadReq [fa31a800:fa31a83f] IF miss
+51131014472500: system.cpu_cluster.cpus.icache.mshr_queue: Allocating new MSHR. Number in use will be 1/4
+51131014472500: system.cpu_cluster.cpus.icache.mshr_queue.entry.targets: New target allocated: ReadReq [fa31a800:fa31a83f] IF
+51131014472500: system.cpu_cluster.cpus.icache.mem_side_port: Scheduling send event at 51131014472750
+51131014472750: system.cpu_cluster.cpus.icache: sendMSHRQueuePacket: MSHR ReadReq [fa31a800:fa31a83f] IF
+51131014472750: system.cpu_cluster.cpus.icache: createMissPacket: created ReadCleanReq [fa31a800:fa31a83f] IF from ReadReq [fa31a800:fa31a83f] IF
+51131014472750: system.cpu_cluster.l2: recvTimingReq tags:
+	Block: state: 16 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfba0 secure: 0 valid: 1 | set: 0x240 way: 0
+	Block: state: 27 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfbb8 secure: 0 valid: 1 | set: 0x2c0 way: 0
+	Block: state: 17 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfb89 secure: 0 valid: 1 | set: 0x380 way: 0
+
+51131014472750: system.cpu_cluster.l2: access for ReadCleanReq [fa31a800:fa31a83f] IF miss
+51131014472750: system.cpu_cluster.l2.mshr_queue: Allocating new MSHR. Number in use will be 1/32
+51131014472750: system.cpu_cluster.l2.mshr_queue.entry.targets: New target allocated: ReadCleanReq [fa31a800:fa31a83f] IF
+51131014472750: system.cpu_cluster.l2.mem_side_port: Scheduling send event at 51131014476000
+51131014476000: system.cpu_cluster.l2: sendMSHRQueuePacket: MSHR ReadCleanReq [fa31a800:fa31a83f] IF
+51131014476000: system.cpu_cluster.l2: createMissPacket: created ReadCleanReq [fa31a800:fa31a83f] IF from ReadCleanReq [fa31a800:fa31a83f] IF
+51131014539000: system.cpu_cluster.l2: recvTimingResp: Handling response ReadResp [fa31a800:fa31a83f] IF
+51131014539000: system.cpu_cluster.l2: Block for addr 0xfa31a800 being updated in Cache
+51131014539000: system.cpu_cluster.l2: using temp block for 0xfa31a800 (ns)
+51131014539000: system.cpu_cluster.l2: Block addr 0xfa31a800 (ns) moving from  to state: 4d47 (E) writable: 1 readable: 1 dirty: 0 prefetched: 0 | tag: 0xfa31a800 secure: 0 valid: 1 | set: 0x2e74696e way: 0x736b5f5f
+51131014539000: system.cpu_cluster.l2.mshr_queue: Deallocating all targets: [0xfa31a800:0xfa31a83f](ns)    state:  InSvc    
+51131014539000: system.cpu_cluster.l2.mshr_queue: MSHR deallocated. Number in use: 0/32
+51131014539000: system.cpu_cluster.l2: recvTimingResp: Leaving with ReadResp [fa31a800:fa31a83f] IF
+51131014540500: system.cpu_cluster.cpus.icache: recvTimingResp: Handling response ReadResp [fa31a800:fa31a83f] IF
+51131014540500: system.cpu_cluster.cpus.icache: Block for addr 0xfa31a800 being updated in Cache
+51131014540500: system.cpu_cluster.cpus.icache: Replacement victim: state: 7261 (I) writable: 0 readable: 0 dirty: 0 prefetched: 0 | tag: 0xffffffffffffffff secure: 0 valid: 0 | set: 0xa0 way: 0
+51131014540500: system.cpu_cluster.cpus.icache: Block addr 0xfa31a800 (ns) moving from  to state: 7265 (S) writable: 0 readable: 1 dirty: 0 prefetched: 0 | tag: 0x3e8c6 secure: 0 valid: 1 | set: 0xa0 way: 0
+51131014540500: system.cpu_cluster.cpus.icache.mshr_queue: Deallocating all targets: [0xfa31a800:0xfa31a83f](ns)    state:  InSvc    
+51131014540500: system.cpu_cluster.cpus.icache.mshr_queue: MSHR deallocated. Number in use: 0/4
+51131014540500: system.cpu_cluster.cpus.icache: recvTimingResp: Leaving with ReadResp [fa31a800:fa31a83f] IF

@@ -1,0 +1,32 @@
+Guardo la documentazione per vedere la differenza fra questi 2 e guardo acquire release
+
+000000000001b050 <__pthread_spin_lock>:
+   1b050:	4785                	li	a5,1
+   1b052:	0cf527af          	amoswap.w.aq	a5,a5,(a0)
+   1b056:	2781                	sext.w	a5,a5
+   1b058:	e399                	bnez	a5,1b05e <__pthread_spin_lock+0xe>
+   1b05a:	4501                	li	a0,0
+   1b05c:	8082                	ret
+   1b05e:	4705                	li	a4,1
+   1b060:	411c                	lw	a5,0(a0)
+   1b062:	fffd                	bnez	a5,1b060 <__pthread_spin_lock+0x10>
+   1b064:	100527af          	lr.w	a5,(a0)
+   1b068:	e781                	bnez	a5,1b070 <__pthread_spin_lock+0x20>
+   1b06a:	1ce526af          	sc.w.aq	a3,a4,(a0)
+   1b06e:	fafd                	bnez	a3,1b064 <__pthread_spin_lock+0x14>
+   1b070:	2781                	sext.w	a5,a5
+   1b072:	f7fd                	bnez	a5,1b060 <__pthread_spin_lock+0x10>
+   1b074:	4501                	li	a0,0
+   1b076:	8082                	ret
+   
+   
+   
+000000000001b050 <__pthread_spin_trylock>:
+   1b050:	872a                	mv	a4,a0
+   1b052:	4505                	li	a0,1
+   1b054:	87aa                	mv	a5,a0
+   1b056:	0cf727af          	amoswap.w.aq	a5,a5,(a4)
+   1b05a:	0007851b          	sext.w	a0,a5
+   1b05e:	00a03533          	snez	a0,a0
+   1b062:	0512                	slli	a0,a0,0x4
+   1b064:	8082                	ret

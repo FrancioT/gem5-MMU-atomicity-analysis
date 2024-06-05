@@ -1,0 +1,139 @@
+bbl loader
+[    0.000000] Linux version 5.10.0 (hn@amarillo) (riscv64-linux-gnu-gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0, GNU ld (GNU Binutils for Ubuntu) 2.30) #1 SMP Mon Jul 19 13:32:59 PDT 2021
+[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80200000
+[    0.000000] efi: UEFI not found.
+[    0.000000] Zone ranges:
+[    0.000000]   DMA32    [mem 0x0000000080200000-0x000000009fffffff]
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080200000-0x000000009fffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080200000-0x000000009fffffff]
+[    0.000000] software IO TLB: mapped [mem 0x000000009b8fd000-0x000000009f8fd000] (64MB)
+[    0.000000] SBI specification v0.1 detected
+[    0.000000] riscv: ISA extensions acdfim
+[    0.000000] riscv: ELF capabilities acdfim
+[    0.000000] percpu: Embedded 16 pages/cpu s26200 r8192 d31144 u65536
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 128775
+[    0.000000] Kernel command line: console=ttyS0 root=/dev/vda ro
+[    0.000000] Dentry cache hash table entries: 65536 (order: 7, 524288 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[    0.000000] Sorting __ex_table...
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Memory: 434848K/522240K available (5866K kernel code, 3086K rwdata, 2048K rodata, 189K init, 341K bss, 87392K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=8 to nr_cpu_ids=1.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=1
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] riscv-intc: 64 local interrupts mapped
+[    0.000000] plic: plic@c000000: mapped 20 interrupts with 1 handlers for 2 contexts.
+[    0.000000] random: get_random_bytes called from start_kernel+0x316/0x496 with crng_init=0
+[    0.000000] riscv_timer_init_dt: Registering clocksource cpuid [0] hartid [0]
+[    0.000000] clocksource: riscv_clocksource: mask: 0xffffffffffffffff max_cycles: 0x24e6a1710, max_idle_ns: 440795202120 ns
+[    0.000022] sched_clock: 64 bits at 10MHz, resolution 100ns, wraps every 4398046511100ns
+[    0.000402] Console: colour dummy device 80x25
+[    0.000465] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=40000)
+[    0.000526] pid_max: default: 32768 minimum: 301
+[    0.000963] Mount-cache hash table entries: 1024 (order: 1, 8192 bytes, linear)
+[    0.001020] Mountpoint-cache hash table entries: 1024 (order: 1, 8192 bytes, linear)
+[    0.003756] rcu: Hierarchical SRCU implementation.
+[    0.004070] EFI services will not be available.
+[    0.004270] smp: Bringing up secondary CPUs ...
+[    0.004307] smp: Brought up 1 node, 1 CPU
+[    0.004819] devtmpfs: initialized
+[    0.007188] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.007241] futex hash table entries: 256 (order: 2, 16384 bytes, linear)
+[    0.007980] NET: Registered protocol family 16
+[    0.043195] vgaarb: loaded
+[    0.043979] SCSI subsystem initialized
+[    0.044750] usbcore: registered new interface driver usbfs
+[    0.044886] usbcore: registered new interface driver hub
+[    0.044997] usbcore: registered new device driver usb
+[    0.046789] clocksource: Switched to clocksource riscv_clocksource
+[    0.060948] NET: Registered protocol family 2
+[    0.062892] tcp_listen_portaddr_hash hash table entries: 256 (order: 0, 4096 bytes, linear)
+[    0.062971] TCP established hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[    0.063290] TCP bind hash table entries: 4096 (order: 4, 65536 bytes, linear)
+[    0.063617] TCP: Hash tables configured (established 4096 bind 4096)
+[    0.063782] UDP hash table entries: 256 (order: 1, 8192 bytes, linear)
+[    0.063880] UDP-Lite hash table entries: 256 (order: 1, 8192 bytes, linear)
+[    0.064200] NET: Registered protocol family 1
+[    0.065063] RPC: Registered named UNIX socket transport module.
+[    0.065096] RPC: Registered udp transport module.
+[    0.065128] RPC: Registered tcp transport module.
+[    0.065162] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.065199] PCI: CLS 0 bytes, default 64
+[    0.066559] workingset: timestamp_bits=62 max_order=17 bucket_order=0
+[    0.091093] NFS: Registering the id_resolver key type
+[    0.091152] Key type id_resolver registered
+[    0.091183] Key type id_legacy registered
+[    0.091488] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    0.092252] NET: Registered protocol family 38
+[    0.092348] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 254)
+[    0.092382] io scheduler mq-deadline registered
+[    0.092414] io scheduler kyber registered
+[    0.175823] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+[    0.178512] printk: console [ttyS0] disabled
+[    0.178590] 10000000.uart: ttyS0 at MMIO 0x10000000 (irq = 1, base_baud = 230400) is a 8250
+[    0.182913] printk: console [ttyS0] enabled
+[    0.183541] [drm] radeon kernel modesetting enabled.
+[    0.195269] loop: module loaded
+[    0.195794] virtio_blk virtio0: [vda] 102400 512-byte logical blocks (52.4 MB/50.0 MiB)
+[    0.195890] vda: detected capacity change from 0 to 52428800
+[    0.199629] libphy: Fixed MDIO Bus: probed
+[    0.201555] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    0.201628] ehci-pci: EHCI PCI platform driver
+[    0.201767] ehci-platform: EHCI generic platform driver
+[    0.201922] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[    0.201993] ohci-pci: OHCI PCI platform driver
+[    0.202131] ohci-platform: OHCI generic platform driver
+[    0.202770] usbcore: registered new interface driver uas
+[    0.202950] usbcore: registered new interface driver usb-storage
+[    0.203262] mousedev: PS/2 mouse device common for all mice
+[    0.203818] usbcore: registered new interface driver usbhid
+[    0.203883] usbhid: USB HID core driver
+[    0.206141] NET: Registered protocol family 10
+[    0.207930] Segment Routing with IPv6
+[    0.208158] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[    0.209611] NET: Registered protocol family 17
+[    0.209837] Key type dns_resolver registered
+[    0.214462] EXT4-fs (vda): mounted filesystem without journal. Opts: (null)
+[    0.214590] VFS: Mounted root (ext4 filesystem) readonly on device 254:0.
+[    0.216234] devtmpfs: mounted
+[    0.216503] Freeing unused kernel memory: 188K
+[    0.222901] Run /sbin/init as init process
+ip: can't find device 'eth0'
+ip: SIOCGIFFLAGS: No such device
+ip: can't find device 'eth0'
+
+[01;34m
+ _   _  ____            _     _                  
+| | | |/ ___|__ _ _ __ | |   (_)_ __  _   ___  __
+| | | | |   / _` | '_ \| |   | | '_ \| | | \ \/ /
+| |_| | |__| (_| | | | | |___| | | | | |_| |>  < 
+ \___/ \____\__,_|_| |_|_____|_|_| |_|\__,_/_/\_\
+[0mWelcome to RiscV
+
+UCanLinux login: root
+Password: 
+[01;32mroot@UCanLinux[00m:[01;34m~[00m # 
+[01;32mroot@UCanLinux[00m:[01;34m~[00m # ls
+[0;0mindex.html[m  [1;32mprova[m
+[01;32mroot@UCanLinux[00m:[01;34m~[00m # 
+[01;32mroot@UCanLinux[00m:[01;34m~[00m # shutdown now
+-sh: shutdown: not found
+[01;32mroot@UCanLinux[00m:[01;34m~[00m # 
+[01;32mroot@UCanLinux[00m:[01;34m~[00m # exit
+
+[01;34m
+ _   _  ____            _     _                  
+| | | |/ ___|__ _ _ __ | |   (_)_ __  _   ___  __
+| | | | |   / _` | '_ \| |   | | '_ \| | | \ \/ /
+| |_| | |__| (_| | | | | |___| | | | | |_| |>  < 
+ \___/ \____\__,_|_| |_|_____|_|_| |_|\__,_/_/\_\
+[0mWelcome to RiscV
+
+UCanLinux login: 

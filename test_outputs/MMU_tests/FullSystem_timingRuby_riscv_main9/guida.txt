@@ -1,0 +1,2 @@
+dopo aver scaricato il boat loader con il kernel linux e l'immagine del disco, ho modificato l'immagine del disco caricandoci lo script da eseguire e modificando il file /etc/rcS che è un file eseguito dal processo che attraverso alcuni comando shell (di cui come ultimo comando ho scritto ./root/script) di solito si usa per istanziare alcuni deamon (https://unix.stackexchange.com/questions/56075/why-is-rcs-required-after-file-system-is-mounted-by-the-kernel).
+Così alla simulazione successiva all'avvio avrò l'esecuzione del programma

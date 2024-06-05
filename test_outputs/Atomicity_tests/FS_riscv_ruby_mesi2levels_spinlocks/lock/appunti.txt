@@ -1,0 +1,5 @@
+da riga 3796 di "chunk.txt" 
+
+"EXCLUSIVE_UNBLOCK" avvengono solo sulla cache l2 (quindi i controlli dello spinlock non avvengono mai sulla l1, evitando così invalidazioni continue) es. riga 4043
+"UPGRADE" a riga 5952 switch0 ottiene lo spin lock, anche con "GETS" alla riga 5996
+infatti poi a riga 5994, switch1 si trova all'istruzione di spin unlock successiva allo sblocco "1b080"

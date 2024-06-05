@@ -1,0 +1,12 @@
+Per filtrare prima ho separato i 2 threads filtrando sul core nel quale si trovavano:
+  cat flag_output.txt | grep "switch1" > thread1.txt
+  cat flag_output.txt | grep "switch0" > thread2.txt
+Poi tramite grep ho trovato la prima riga a cui inizia la funzione del thread
+  grep -n "0x10564" thread1.txt
+e ho tolto tutta la parte prima (trovando prima il numero di righe nel file e sottraendo la riga trovata prima)
+  wc -l thread1.txt 
+  cat thread1.txt | tail -n 2470794 > tmp
+poi faccio la stessa cosa con l'ultima riga della funzione del thread (filtrando tutto quello che c'è dopo
+  cat thread1.txt | head -n 2496398 > tmp
+infine filtro tutte le volte che entra nella funzione do_stuff() grazie al programma filter.c
+

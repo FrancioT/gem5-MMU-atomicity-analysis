@@ -1,0 +1,106 @@
+ATTENZIONE!
+il numero nel nome delle cache non è coerente con quello dei core, le cache associate ad ogni core sono:
+switch0: 
+	- l1_controllers0
+switch1: 
+	- l1_controllers1
+
+mentre per la cache di secondo livello: 
+	- l2_controllers0:  serve per accedere ai dati (un po' come il dtb)
+	- l2_controllers1:  serve per accedere alle istruzioni (un po' come itb)
+	
+	
+fino a riga 558 succede che il core "switch0" ha superato il primo while (con la prima spin lock che non ci interessa), ma non ha ancora preso di nuovo il lock (nel for), lo "switch1" invece prende il lock del while e lo rilascia, va avanti entrando nel for, ma il primo a entrare nella funzione di spin_lock è lo switch0 a riga 558.
+A 583 arriva anche "switch1".
+Lo switch1 è il primo a prendere il lock, grazie all'atomic swap a riga 618 con l'output:  "290489372000: global: Testing Lock for addr: 0x10107d880 cur -1 con 1"
+(guardo analisi della l2)
+L'indirizzo dell'istruzione è 1a944 perchè con la 1a940 prendiamo solo metà dell'istuzione e con 1a944 prendiamo la seconda metà dell'istuzione dell'atomic swap.
+Inoltre l'indirizzo della variabile spin lock è 0x8a8b0.
+Lo switch1 a questo punto ritorna della funzione "func" del thread con il lock acquisito da riga 651 (N.B: 0x8a8b4 NON è lo spin lock, ma un altra variabile globale)
+
+A riga 670 si vede che a questo punto il core "switch0" fallisce l'atomic swap con la riga:  "290489384000: global: Testing Lock for addr: 0x10107d880 cur -1 con 0"
+con anche la miss "290489384000: board.cache_hierarchy.ruby_system.l1_controllers0.sequencer: Cache miss at [0x10107d8b0, line 0x10107d880]", che fa miss (nonostante prima avesse già recuperato la variabile di swap, a riga 589), poichè lo switch1 con l'atomic swap che è andata a buon fine, gli ha invalidato la entry.
+
+A riga 701 si vede che infatti il core "switch0" ha fallito l'atomic swap ed è branchato sotto la prima ret, a riga "0x1a950".
+A riga 707, switch0 carica lo spin lock per spinnarci sopra (che questa volta fa hit, perchè la miss la ha già fatta a riga 671, dopo la global fallita dell'atomic swap a riga 672)
+
+Alla 2015 inizia la fase di unlock di switch1, che recupera anche la variabile sp_lock facendo anche lui hit (entrmbi i core fanno hit perchè nessuno sta modificando la variabile)
+a riga 2120 c'è la global per l'atomic swap dell'unlock di switch1 (che è a riga 2056)
+
+a riga 2055 lo switch1 libera con l'atomic swap lo spin lock, ma prima che la modifica venga effettivamente vista globalmente dalle chace, si interpone lo switch0.
+La modifica dell'atomic swap si vede effettivamente a riga 2120 con:  "290489657000: global: Testing Lock for addr: 0x10107d880 cur -1 con 1"
+C'è una cache miss sulla cache di switch1 perchè l'atomic swap invalida su tutte le cache, una volta completata.
+
+
+A 2184 switch0 fa miss sullo spin lock (visto che lo switch1 lo ha rilasciato)
+a 2208 finalmente supera il branch e va a "0x1a954"
+a 2218 switch0 fa la load reserve su sp_lock
+e a 2233 c'è il messaggio globale:
+    290489679000: global: Setting Lock for addr: 0x10107d880 to 0
+dato dalla load reserve di switch0, poi nelle righe successive fino a 2273 arriva alla store conditional, però si interpone il core switch1 che arriva all'atomic swap (a riga 2317 e 2331), ma prima di concludere l'atomic swap il core switch0 ritorna ad eseguire la store conditional e testa il lock con il valore che aveva settato prima (che era 0) e va a buon fine e fa la clear del set lock che aveva fatto
+  290489704000: global: Testing Lock for addr: 0x10107d880 cur 0 con 0
+  290489704000: global: Clear Lock for addr: 0x10107d880
+N.B: l'atomic non usa la global testing lock (infatti fa l'estensione di segno del return message, per questo ci esce "testing lock curr -1"), ma usa il messaggio di ritorno che è salvato nel registro a5.
+Le uniche istruzioni che usano la global testing lock sono la load reserve e store conditional, che infatti quando il core switch1 finalmente riprende il controllo del lock grazie a queste 2 
+operazioni, abbiamo il messaggio:
+  290490070000: global: Testing Lock for addr: 0x10107d880 cur 1 con 1
+  290490070000: global: Clear Lock for addr: 0x10107d880
+
+
+
+
+
+
+
+
+ANALISI DELLA L2:
+https://www.gem5.org/documentation/general_docs/ruby/MESI_Two_Level/
+A riga 624 dopo che switch1 ha preso con successo il lock per l'atomic swap, lo switch0 cerca di accedere anche lui alla variabile spin lock, ma la l2 è nello stato MT.
+In questo stato (MT) la L1 di switch1 ha possesso del blocco, togliendolo anche alla l2, quindi lo switch0 deve inoltrare la richiesta alla cache L1 di switch1 (una richiesta di scrittura, GETX).
+La cache di switch0 infatti ritorna una miss, riga 671 e con messaggio di atomic swap fallita (riga 670).
+A confermare ulteriormente si vedono i messaggi della l2 in risposta alla richiesta di switch0 a riga 694-696, dove lo stato MT_MB indica che la cache l2 non possiede un dato readable o writable e la cache L1 di switch1 risponde con GETS (nello stato MT, lo stesso di prima)
+
+
+switch1 prende possesso del blocco di cache corrispondente allo spinlock in scrittura per l'atomic swap
+switch0 cerca di prendere possesso del blocco di cache (anche lui in scrittura, infatti GETX), ma fallisce e restituisce il messaggio che si vede, dove siamo nello stato MT 
+(lo stato MT indica che il blocco di cache non è più valido nella L2 e che è in exclusive permission in una delle 2 L1).
+switch0 quindi cerca di richiedere una exclusive unblock, al che switch1 (dopo aver finito con l'atomic operation) riesce a liberargli solo il lettura il blocco, infatti fa
+GETS.
+
+
+transizioni di quello che ho commentato qui sopra:
+MT      (getx)               switch0
+MT_MB   (exclusive unblock)  switch0
+MT      (gets)               switch1
+
+poi:
+MT_SB   (unblock)            switch1
+SS      (upgrade)            switch1
+SS_MB   (gets)               switch0     <-------------- LOOP --------------
+SS_MB   (exclusive unblock)  switch1
+MT      (gets)               switch0
+MT_SB   (unblock)            switch0
+SS      (upgrade)            switch1     <----------- FINE LOOP ------------
+
+il loop termina a riga 2300 con il nuovo stato
+SS      (upgrade)            switch0
+e poi si torna nel loop, con un transitorio:
+SS_MB   (getx)               switch1
+SS_MB   (exclusive unblock)  switch0
+MT      (getx)               switch1
+
+MT_MB   (gets)               switch0
+MT_MB   (exclusive unblock)  switch1
+MT      (gets)               switch0
+MT_SB   (unblock)            switch0
+SS      (upgrade)            switch0
+
+SS_MB   (gets)               switch1     <-------------- LOOP --------------
+SS_MB   (exclusive unblock)  switch0
+MT      (gets)               switch1
+MT_SB   (unblock)            switch1
+SS      (upgrade)            switch0     <----------- FINE LOOP ------------
+
+
+
+

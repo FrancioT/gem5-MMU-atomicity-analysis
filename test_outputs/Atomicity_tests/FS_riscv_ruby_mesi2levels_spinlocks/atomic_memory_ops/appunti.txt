@@ -1,0 +1,7 @@
+riga 1964 entrambi i core cercano di accedere la variabile globale per eseguire l'atomic swap
+il core 1 è il primo ad eseguire e prende in M la entry di cache
+dopo aver finito il core 0 non trova la entry valida in l1, quindi passa da l2, dove trova lo stato MT, quindi inoltra la richiesta di GETX al core che possiede la entry di cache, riga 2047
+riga 2113 il core 1 riceve la richiesta del core 0
+riga 2115 l'azione richiesta è foreward getx  "Fwd_GETX"
+seguita da "executing forward_eviction_to_cpu",  "executing d_sendDataToRequestor" e next state I (dato che il core 0 ha richiesto una GETX e non GETS)
+a questo punto a riga 2179 il core 0 riprende ad eseguire l'atomic instruction
