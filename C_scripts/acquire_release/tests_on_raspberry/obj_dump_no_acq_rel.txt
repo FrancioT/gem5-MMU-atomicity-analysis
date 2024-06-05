@@ -1,0 +1,129 @@
+0000000000000814 <_Z8producerPv>:
+ 814:	d10083ff 	sub	sp, sp, #0x20
+ 818:	f90007e0 	str	x0, [sp, #8]
+ 81c:	f94007e0 	ldr	x0, [sp, #8]
+ 820:	f9400000 	ldr	x0, [x0]
+ 824:	f9000fe0 	str	x0, [sp, #24]
+ 828:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 82c:	91214000 	add	x0, x0, #0x850
+ 830:	f900001f 	str	xzr, [x0]
+ 834:	1400001c 	b	8a4 <_Z8producerPv+0x90>
+ 838:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 83c:	91214000 	add	x0, x0, #0x850
+ 840:	f9400000 	ldr	x0, [x0]
+ 844:	9017d881 	adrp	x1, 2fb10000 <my_values+0x17d77bb0>
+ 848:	91214021 	add	x1, x1, #0x850
+ 84c:	f9400021 	ldr	x1, [x1]
+ 850:	91000402 	add	x2, x0, #0x1
+ 854:	90000100 	adrp	x0, 20000 <__libc_start_main@GLIBC_2.34>
+ 858:	91014000 	add	x0, x0, #0x50
+ 85c:	f8217802 	str	x2, [x0, x1, lsl #3]
+ 860:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 864:	91214000 	add	x0, x0, #0x850
+ 868:	f9400000 	ldr	x0, [x0]
+ 86c:	9017d881 	adrp	x1, 2fb10000 <my_values+0x17d77bb0>
+ 870:	91214021 	add	x1, x1, #0x850
+ 874:	f9400021 	ldr	x1, [x1]
+ 878:	91000402 	add	x2, x0, #0x1
+ 87c:	900becc0 	adrp	x0, 17d98000 <prec_elements+0x17d77fb0>
+ 880:	91114000 	add	x0, x0, #0x450
+ 884:	f8217802 	str	x2, [x0, x1, lsl #3]
+ 888:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 88c:	91214000 	add	x0, x0, #0x850
+ 890:	f9400000 	ldr	x0, [x0]
+ 894:	91000401 	add	x1, x0, #0x1
+ 898:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 89c:	91214000 	add	x0, x0, #0x850
+ 8a0:	f9000001 	str	x1, [x0]
+ 8a4:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 8a8:	91214000 	add	x0, x0, #0x850
+ 8ac:	f9400000 	ldr	x0, [x0]
+ 8b0:	f9400fe1 	ldr	x1, [sp, #24]
+ 8b4:	eb00003f 	cmp	x1, x0
+ 8b8:	54fffc0c 	b.gt	838 <_Z8producerPv+0x24>
+ 8bc:	d2800000 	mov	x0, #0x0                   	// #0
+ 8c0:	910083ff 	add	sp, sp, #0x20
+ 8c4:	d65f03c0 	ret
+
+00000000000008c8 <_Z8consumerPv>:
+ 8c8:	a9bb7bfd 	stp	x29, x30, [sp, #-80]!
+ 8cc:	910003fd 	mov	x29, sp
+ 8d0:	f9000fe0 	str	x0, [sp, #24]
+ 8d4:	f9400fe0 	ldr	x0, [sp, #24]
+ 8d8:	f9400000 	ldr	x0, [x0]
+ 8dc:	f9001fe0 	str	x0, [sp, #56]
+ 8e0:	f90027ff 	str	xzr, [sp, #72]
+ 8e4:	92800000 	mov	x0, #0xffffffffffffffff    	// #-1
+ 8e8:	f9001be0 	str	x0, [sp, #48]
+ 8ec:	92800000 	mov	x0, #0xffffffffffffffff    	// #-1
+ 8f0:	f90017e0 	str	x0, [sp, #40]
+ 8f4:	f90023ff 	str	xzr, [sp, #64]
+ 8f8:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 8fc:	91214000 	add	x0, x0, #0x850
+ 900:	f9400000 	ldr	x0, [x0]
+ 904:	f90023e0 	str	x0, [sp, #64]
+ 908:	14000016 	b	960 <_Z8consumerPv+0x98>
+ 90c:	900becc0 	adrp	x0, 17d98000 <prec_elements+0x17d77fb0>
+ 910:	91114000 	add	x0, x0, #0x450
+ 914:	f94023e1 	ldr	x1, [sp, #64]
+ 918:	f8617800 	ldr	x0, [x0, x1, lsl #3]
+ 91c:	f90017e0 	str	x0, [sp, #40]
+ 920:	90000100 	adrp	x0, 20000 <__libc_start_main@GLIBC_2.34>
+ 924:	91014000 	add	x0, x0, #0x50
+ 928:	f94023e1 	ldr	x1, [sp, #64]
+ 92c:	f8617800 	ldr	x0, [x0, x1, lsl #3]
+ 930:	f9001be0 	str	x0, [sp, #48]
+ 934:	f94017e1 	ldr	x1, [sp, #40]
+ 938:	f9401be0 	ldr	x0, [sp, #48]
+ 93c:	eb00003f 	cmp	x1, x0
+ 940:	5400008d 	b.le	950 <_Z8consumerPv+0x88>
+ 944:	f94027e0 	ldr	x0, [sp, #72]
+ 948:	91000400 	add	x0, x0, #0x1
+ 94c:	f90027e0 	str	x0, [sp, #72]
+ 950:	9017d880 	adrp	x0, 2fb10000 <my_values+0x17d77bb0>
+ 954:	91214000 	add	x0, x0, #0x850
+ 958:	f9400000 	ldr	x0, [x0]
+ 95c:	f90023e0 	str	x0, [sp, #64]
+ 960:	f94023e1 	ldr	x1, [sp, #64]
+ 964:	f9401fe0 	ldr	x0, [sp, #56]
+ 968:	eb00003f 	cmp	x1, x0
+ 96c:	54fffd0b 	b.lt	90c <_Z8consumerPv+0x44>  // b.tstop
+ 970:	f94027e1 	ldr	x1, [sp, #72]
+ 974:	90000000 	adrp	x0, 0 <__abi_tag-0x278>
+ 978:	91288000 	add	x0, x0, #0xa20
+ 97c:	97ffff51 	bl	6c0 <printf@plt>
+ 980:	d2800000 	mov	x0, #0x0                   	// #0
+ 984:	a8c57bfd 	ldp	x29, x30, [sp], #80
+ 988:	d65f03c0 	ret
+
+000000000000098c <main>:
+ 98c:	a9bd7bfd 	stp	x29, x30, [sp, #-48]!
+ 990:	910003fd 	mov	x29, sp
+ 994:	d29e1000 	mov	x0, #0xf080                	// #61568
+ 998:	f2a05f40 	movk	x0, #0x2fa, lsl #16
+ 99c:	f9000fe0 	str	x0, [sp, #24]
+ 9a0:	910063e0 	add	x0, sp, #0x18
+ 9a4:	9100a3e4 	add	x4, sp, #0x28
+ 9a8:	aa0003e3 	mov	x3, x0
+ 9ac:	90000000 	adrp	x0, 0 <__abi_tag-0x278>
+ 9b0:	91205002 	add	x2, x0, #0x814
+ 9b4:	d2800001 	mov	x1, #0x0                   	// #0
+ 9b8:	aa0403e0 	mov	x0, x4
+ 9bc:	97ffff3d 	bl	6b0 <pthread_create@plt>
+ 9c0:	910063e0 	add	x0, sp, #0x18
+ 9c4:	910083e4 	add	x4, sp, #0x20
+ 9c8:	aa0003e3 	mov	x3, x0
+ 9cc:	90000000 	adrp	x0, 0 <__abi_tag-0x278>
+ 9d0:	91232002 	add	x2, x0, #0x8c8
+ 9d4:	d2800001 	mov	x1, #0x0                   	// #0
+ 9d8:	aa0403e0 	mov	x0, x4
+ 9dc:	97ffff35 	bl	6b0 <pthread_create@plt>
+ 9e0:	f94017e0 	ldr	x0, [sp, #40]
+ 9e4:	d2800001 	mov	x1, #0x0                   	// #0
+ 9e8:	97ffff3a 	bl	6d0 <pthread_join@plt>
+ 9ec:	f94013e0 	ldr	x0, [sp, #32]
+ 9f0:	d2800001 	mov	x1, #0x0                   	// #0
+ 9f4:	97ffff37 	bl	6d0 <pthread_join@plt>
+ 9f8:	52800000 	mov	w0, #0x0                   	// #0
+ 9fc:	a8c37bfd 	ldp	x29, x30, [sp], #48
+ a00:	d65f03c0 	ret

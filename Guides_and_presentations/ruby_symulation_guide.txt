@@ -1,0 +1,78 @@
+Guida a come eseguire i python scripts per una simulazione full system con ruby
+
+
+
+Sullo script di python:
+
+board.set_kernel_disk_workload(
+    kernel=KernelResource(path_to_kernel_binary),
+    disk_image=DiskImageResource(path_to_disk_image, root_partition=part_number),
+    bootloader=BootloaderResource(path_to_BootLoader),
+)
+
+path_to_kernel_binary = il percorso assoluto nel proprio pc al kernel già compilato che si vuole usare, salvato in una variabile di tipo stringa
+path_to_disk_image = il percorso assoluto nel proprio pc alla immagine del disco che si vuole usare, salvato in una variabile di tipo stringa
+part_number = il numero della partizione in cui è presente la root del disco che si vuole simulare (quella che in linux contiene le cartelle: bin, etc, home, ...).
+              A volte non è neanche necessario specificare la root_partition (per l'immagine che usiamo noi di riscv non serve, mentre per quella di arm serve)
+path_to_BootLoader = il percorso assoluto nel proprio pc al boot loader già compilato che si vuole usare, salvato in una variabile di tipo stringa.
+                     Il boot loader non sempre è necessario (nel nostro caso ad esempio per arm serve, mentre per riscv nel compilato del kernel già è presente il boot loader)
+
+
+
+
+Prima di eseguire la simulazione, bisogna caricare il programma che vogliamo eseguire sulla disk image:
+1) Per caricare il programma che andrà eseguito eseguo il comando "sudo mount -o loop,offset=[numero_ofst] [immagine_del_disco] /mnt/myimg"
+   dove al posto di [immagine_del_disco] scrivo il path all'immagine del disco che voglio modificare, mentre al posto di [numero_ofst] devo mettere una posizione in byte.
+   Per scoprie quanto vale l'offset esegui il comando "parted [immagine_del_disco]", poi "unit", poi "B" e infine "print". A questo punto verranno stampate le informazioni sulle partizioni 
+   presenti in quella disk image (sotto la colonna "Number") con il loro relativo offset (sotto la colonna "Start"), insieme ad altre informazioni come dimension "Size", tipo di partizione "File", ecc.
+   
+2) Dopo aver montato la disk image con il comando mount, mi sposto all'interno della cartella su cui è stata montata "/mnt/myimg" e copio qui il programma da eseguire.
+   Nel nostro caso, per riscv:   va modificato anche il file etc/rcS, dove andrà inserita la riga "./root/programma" per eseguire il programma che è stato copiato nella cartella di root 
+   della disk image.
+   Per arm invece:  nella cartella "root" copio il programma da eseguire e modifico il file gem5_init.sh cancellandone tutto il contenuto e scrivendo "./programma"
+                    N.B: per poter entrare in questa cartella della disk image e poterla modificare devo essere super user
+
+3) Infine con il comando "sudo umount /mnt/myimg" smontare l'immagine
+
+
+
+
+Per compilare il programma c o c++:
+Dato che il programma che usiamo avrà al sui interno le istruzioni m5 necessarie per permettere lo switch della cpu (da atomic a timing), va compilato in modo particolare.
+1) Prima di tutto cosruisco le librerie necessarie all'utilizzo delle istruzioni m5 con il comando:
+   "scons riscv.CROSS_COMPILE=[path_to_cross_compiler]/riscv_toolchain/bin/riscv64-unknown-linux-gnu- -C util/m5 build/riscv/out/m5"
+   N.B: esegui il comando da dentro la cartella del repository di gem5 (così da  non dover modificare gli ultimi 2 path)
+        Al posto di [path_to_cross_compiler] scrivo il path assoluto alla cartella dov'è contenuto il cross compilatore
+        Nel caso di arm invece cambio il comando con:  scons arm64.CROSS_COMPILE=[path_to_cross_compiler]/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-linux-gnu/bin/aarch64-none-linux-gnu- -C util/m5 build/arm64/out/m5
+
+2) A questo punto compilo il mio programma con il comando:
+   "[path_to_cross_compiler]/riscv_toolchain/bin/riscv64-unknown-linux-gnu-gcc -static [path_to_c_code] -o prova -I gem5/include -L [path_to_gem5]/gem5/util/m5/build/riscv/out -lm5"
+   sostituendo le 3 variabili [path_to_cross_compiler], [path_to_c_code], [path_to_gem5] con i vari path corrispondenti
+   N.B: il flag -static serve per evitare di avere dipendenze da librerie esterne che nell'immagine del disco potrebbero non essere presenti.
+        L'ordine delle varie flag e delle componenti di questo comando è importante.
+        Dato che sto includendo già nel programma la libreria alle m5 operations, non serve che i comandi m5 siano presenti anchè nell'immagine del disco che uso per la simulazione
+
+
+
+
+Infine per poter avere la stampa di tutti i debug flags necessari lancio una prima simulazione con, ad esempio:
+  "./gem5/build/RISCV_MESI_TwoLevels/gem5.opt gem5/configs/example/my_python_scripts/riscv-fs_MESI_TwoLevels.py"
+poi non appena si arriva all'istruzione che attua la cpu switching verrà stampato un messaggio con i tick del clock al momento della cpu switch
+prendo quel numero di tick [numero_di_tick] e lo metto nel comando:
+  "./gem5/build/RISCV_MESI_TwoLevels/gem5.opt --debug-flags=[lista] --debug-start=[numero_di_tick] gem5/configs/example/my/riscv-fs_MESI_TwoLevels.py"
+
+N.B: il comando per eseguire lo script è stato messo nel file "etc/rcS" proprio perchè così possa essere eseguito durante il boot in automatico, sempre in un momento specifico (a quel numero di tick)
+     così che la stampa dei flags avvenga solo da quando inizio ad eseguire il programma, dopo la cpu switch.
+
+
+
+
+Nel codice c o c++ del programma che vogliamo eseguire nella simulazione scrivo:
+  "#include <gem5/m5ops.h>"
+e nel main come prima istruzione:
+  "m5_switch_cpu();"
+e come ultima istruzione:
+  "m5_exit(0);"
+
+
+

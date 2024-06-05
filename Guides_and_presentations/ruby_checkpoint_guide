@@ -1,0 +1,87 @@
+---------------------------------------
+    System Structure Graphs: pydot
+---------------------------------------
+How to make pydot work:
+    1. Check if the following packets are installed:
+        - pydot     -> pip install pydot
+        - pydotplus -> pip install pydotplus (might not need)
+        - graphviz  -> sudo apt install graphviz
+    2. Recompile gem5
+    3. If it still doesn't detect pydot edit src/python/m5/util/dot_writer.py
+       in the following way:
+        - change from this:
+            try:
+                import pydot
+            except:
+                pydot = False
+        - to this:
+            try:
+                import pydot
+            except:
+                try:
+                    import sys
+                    sys.path.add('/home/[your_user]/.local/lib/python[python_version]/site-packages')
+                except:
+                    pydot = False
+    4. Recompile gem5
+
+NOTES:
+The following code can be used to drop into a python shell from wherever
+you place this in your gem5 python scripts. Was useful to debug pydot
+import issue on gem5 v23.1.0.0
+
+    import pdb
+    pdb.set_trace()
+
+---------------------------------------
+    Checkpoints on RISCV with ruby
+---------------------------------------
+In order to create a checkpoint via terminal session to simulated fs:
+    1. Make sure the m5 tools are installed in the image (/sbin/m5 must exist)
+        - to do it copy the file in gem5/util/m5/build/riscv/out/m5  in the folder /sbin/ of the disk image
+    2. Start the simulation
+    3. Connect to the simulated system via m5term or telnet:
+        For m5term:
+          a. cd /util/term/
+              - run make if there is no m5term executable
+          b. run ./m5term localhost 3456
+    4. Run m5 checkpoint on the simulated system
+NOTE:
+If using multiple cores ATOMIC cpus are recommended for checkpoint creation
+(got some seg faults with multiple TIMING cpus)
+
+In order to resume a checkpoint:
+    1. In the simulation python script add this line:
+        - from gem5.resource.resource import CheckpointResource
+    2. And this other line in the board.set_kernel_disk_workload section
+        - checkpoint=CheckpointResource("/[path_to_gem5]/m5out/cpt.[checkpoint_number]/"),
+
+NOTES:
+Would be nice to add argument switches to enable/disable/select checkpoint
+resume
+
+Cannot change the number of cores wrt the checkpoint.
+Cannot change the image wrt the checkpoint.
+Can change the memory hierarchy.
+Can change the CPU TYPE
+
+
+
+In order to execute the test scripts in the /etc/rcS file append:
+	m5 checkpoint
+
+	m5 readfile > /root/prova
+	if [ -s /root/prova ]; then
+	    # if the file is not empty, execute it
+	    chmod +x /root/prova
+	    /root/prova
+	    m5 exit
+	fi
+
+so that the script is passed at runtime during the simulation and it is no longer needed to modify the disk image each time.
+N.B: the checkpoint has to be done before the execution of the test script, if it's done inside using the "gem5/m5ops.h" library it doesn't work
+
+
+
+
+
