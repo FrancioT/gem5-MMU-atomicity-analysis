@@ -3,8 +3,8 @@ In this repo there are all the tests, traces and scripts used in order to analyz
 * atomic instructions
 * synchronization methods (like load reserve, store conditional)
 * the fences and weaker ordering instructions like acquire release
-\
-\
+<br />
+<br />
 The repository structure is defined as follows: 
 * the "C_scripts" folder contains all the codes used to test the MMU and the synchronization techniques for multi-threading.
 * the "Guides_and_presentations" folder contains the gem5 simulation guides, the presentations and the sequence diagrams used during the analysis
